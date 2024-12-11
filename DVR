@@ -1,0 +1,76 @@
+#include<stdio.h>
+ #include<stdlib.h> 
+ #include<string.h> 
+ #define MAX 50
+#define INF 9999
+
+
+int main()
+{
+
+int n, i, j, k;
+char router[MAX][MAX];
+int dist[MAX][MAX], nexthop[MAX][MAX];
+
+
+printf("Enter the number of nodes: "); scanf("%d", &n);
+
+printf("Enter the distances between nodes (use-1 for no path):\n"); for(i = 0; i < n; i++) {
+for(j = 0; j < n; j++) { if(i == j) {
+dist[i][j] = 0; continue;
+}
+
+
+printf("dist[%d][%d]: ", i, j);
+scanf("%d", &dist[i][j]);
+
+
+if(dist[i][j] ==-1) { dist[i][j] = INF;
+}
+}
+}
+
+
+
+printf("Enter the names of the nodes:\n"); for(i = 0; i < n; i++) {
+scanf("%s", router[i]);
+
+}
+
+for(i = 0; i < n; i++) { for(j = 0; j < n; j++) {
+nexthop[i][j] = (dist[i][j] != INF && i != j) ? j :-1;
+
+}
+}
+
+
+
+for(k = 0; k < n; k++) { for(i = 0; i < n; i++) {
+for(j = 0; j < n; j++) {
+if(dist[i][k] != INF && dist[k][j] != INF && dist[i][j] > dist[i][k] + dist[k][j])
+{
+dist[i][j] = dist[i][k] + dist[k][j]; nexthop[i][j] = nexthop[i][k];
+}
+}
+}
+}
+
+
+
+for(i = 0; i < n; i++) {
+printf("\nRouting table for node: %s\n", router[i]); printf("Destination\tDistance\tNextHop\n");
+for(j = 0; j < n; j++) { if(i == j) {
+continue;
+
+}
+if(dist[i][j] == INF) {
+printf("%s\t\tINF\t\t-\n", router[j]);
+} else {
+printf("%s\t\t%d\t\t%s\n", router[j], dist[i][j], router[nexthop[i][j]]);
+
+}
+}
+}
+
+return 0;
+}
